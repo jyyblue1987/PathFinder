@@ -48,15 +48,92 @@ int* parseValue(char *val)
 	return x;
 }
 
+int calcBestPath(int **x, int b, int t, int *p, int p_count)
+{
+	int i = 0, j = 0, k = 0;
+	int val = 0;
+	int *pp = NULL;
+	int hist[4];
+	int missed_value = -1;
+
+	int max_len = 0;
+	int len = 0;
+	
+	for(k = 0; k < p_count; k++)
+	{
+		pp = p + k * DIGIT_COUNT;		
+		missed_value = -1;
+		for(i = b - 1, j = 0; i >= t; i--, j++ )
+		{				
+			if( j % 3 == 0 )
+				memset(hist, 0, 4 * sizeof(int));
+
+			val = x[i][pp[j % 3] - 1];
+			hist[val]++;
+
+			// check missed value
+			if( j == 2 )	// 3
+			{
+				if(hist[1] == 0 && hist[2] >= 1 && hist[3] >= 1 )
+					missed_value = 1;
+				else if(hist[1] >= 1 && hist[2] == 0 && hist[3] >= 1 )
+					missed_value = 2;
+				else if(hist[1] >= 1 && hist[2] >= 1 && hist[3] == 0 )
+					missed_value = 2;	 
+
+				if( missed_value < 0 ) // Breakdown
+					break;		
+			}
+			else if( j < 2 )
+			{
+				
+			}
+			else	// 
+			{
+				if( hist[missed_value] > 0 ) // Breakdown														
+					break;
+
+				if( j % 3 == 2 )
+				{
+					int breakdown_flag = 0;
+					for(int q = 1; q < 3; q++)
+					{
+						if( q == missed_value )
+							continue;
+
+						if( hist[q] == 0 )
+						{
+							breakdown_flag = 1;
+							break;
+						}
+					}
+
+					if( breakdown_flag == 1 )
+						break;
+				}
+			}
+
+			len = j + 1;
+		}
+
+		if( len >= max_len )
+		{
+			max_len = len;
+		}
+	}
+
+	return max_len;
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	int i = 0, j = 0;
-	int PERM_TOTAL_COUNT  = DIGIT_COUNT;
+	int PERM_TOTAL_COUNT  = 1;
 
 	for(i = 0; i < DIGIT_COUNT; i++)
 		PERM_TOTAL_COUNT *= COLUMN_COUNT;
 
-	int *perm_list = (int*)calloc(PERM_TOTAL_COUNT, sizeof(int));
+	int *perm_list = (int*)calloc(PERM_TOTAL_COUNT * DIGIT_COUNT, sizeof(int));
 	if( perm_list == NULL )
 		return -1;
 
@@ -94,6 +171,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		xx[i] = parseValue(x[i]);
 	}
+
+	calcBestPath(xx, row_count, 0, perm_list, PERM_TOTAL_COUNT);
 
 	free(perm_list);
 	for(i = 0; i < row_count; i++)
