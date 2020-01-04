@@ -12,7 +12,7 @@ using namespace std;
 #define RANDOM_MODE	1
 
 #if RANDOM_MODE
-#define MAX_ROW_COUNT	12
+#define MAX_ROW_COUNT	100
 #define COLUMN_COUNT	16
 #define DIGIT_COUNT		3
 #else
@@ -228,7 +228,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// display input values
 	cout << "Input Values: " << endl;
-	for(i = 0; i < MAX_ROW_COUNT; i++)
+	for(i = MAX_ROW_COUNT - max_len; i < MAX_ROW_COUNT; i++)
 	{
 		for(j = 0; j < COLUMN_COUNT; j++)
 			cout << xx[i][j];
@@ -256,7 +256,11 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			cout << p[j];			
 		}
-		cout << ")" << "\t" << max_perm_num_missed[i * 2 + 1] << endl;		
+		cout << ") height " << (max_len / DIGIT_COUNT);
+		int val = max_len % DIGIT_COUNT;
+		if( val > 0  )
+			cout << val << "/" << DIGIT_COUNT;
+		cout << " length " << max_len << " missing " << max_perm_num_missed[i * 2 + 1] << endl;		
 
 		max_perm_count++;
 	}
