@@ -11,6 +11,7 @@ using namespace std;
 #define MAX_ROW_COUNT	200
 #define COLUMN_COUNT	16
 #define DIGIT_COUNT		3
+#define MAX_PERM_COUNT		1000
 
 void generatePermList(int *perm_list, int level, int &count)
 {
@@ -48,7 +49,7 @@ int* parseValue(char *val)
 	return x;
 }
 
-int calcBestPath(int **x, int b, int t, int *p, int p_count)
+int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_missed)
 {
 	int i = 0, j = 0, k = 0;
 	int val = 0;
@@ -58,6 +59,8 @@ int calcBestPath(int **x, int b, int t, int *p, int p_count)
 
 	int max_len = 0;
 	int len = 0;
+
+	int max_perm_count = 0;
 	
 	for(k = 0; k < p_count; k++)
 	{
@@ -116,9 +119,25 @@ int calcBestPath(int **x, int b, int t, int *p, int p_count)
 			len = j + 1;
 		}
 
-		if( len >= max_len )
+		if( len > max_len )
 		{
+			memset(max_perm_num_missed, 0, 2 * MAX_PERM_COUNT * sizeof(int));
+			max_perm_count = 0;
+
+			max_perm_num_missed[0] = k;
+			max_perm_num_missed[1] = missed_value;
+			max_perm_count++;
+
 			max_len = len;
+		}
+		else if( len >= max_len && len > 0 )
+		{
+			if( max_perm_count < MAX_PERM_COUNT )
+			{
+				max_perm_num_missed[max_perm_count * 2] = k;
+				max_perm_num_missed[max_perm_count * 2 + 1] = missed_value;
+				max_perm_count++;
+			}
 		}
 	}
 
@@ -172,11 +191,24 @@ int _tmain(int argc, _TCHAR* argv[])
 		xx[i] = parseValue(x[i]);
 	}
 
-	calcBestPath(xx, row_count, 0, perm_list, PERM_TOTAL_COUNT);
+	int *max_perm_num_missed = (int *) calloc(MAX_PERM_COUNT * 2, sizeof(int));
+	calcBestPath(xx, row_count, 0, perm_list, PERM_TOTAL_COUNT, max_perm_num_missed);
 
-	free(perm_list);
+	for(i = 0; i < MAX_PERM_COUNT; i++)
+	{
+		int p_num = max_perm_num_missed[i * 2];
+		if(max_perm_num_missed[i * 2 + 1] < 1 )
+			break;
+
+		int *p = perm_list + p_num * DIGIT_COUNT;
+		cout << "(" << p[0] << "," << p[1] << "," << p[2] << ") " << max_perm_num_missed[i * 2 + 1] << endl;		
+	}
+
+	free(max_perm_num_missed);
 	for(i = 0; i < row_count; i++)
 		free(xx[i]);
+
+	free(perm_list);
 
 	return 0;
 }
