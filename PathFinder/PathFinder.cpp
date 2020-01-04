@@ -3,9 +3,10 @@
 
 #include "stdafx.h"
 #include <stdlib.h>
-
+#include <Windows.h>
 
 #include <iostream>
+
 using namespace std;
 
 #define MAX_ROW_COUNT	200
@@ -194,8 +195,11 @@ int _tmain(int argc, _TCHAR* argv[])
 		xx[i] = parseValue(x[i]);
 	}
 
+	
+	unsigned long long  start = GetTickCount64();
 	int *max_perm_num_missed = (int *) calloc(MAX_PERM_COUNT * 2, sizeof(int));
 	int max_len = calcBestPath(xx, row_count, 0, perm_list, PERM_TOTAL_COUNT, max_perm_num_missed);
+	unsigned long long  end = GetTickCount64();
 
 	int max_perm_count = 0;
 	for(i = 0; i < MAX_PERM_COUNT; i++)
@@ -211,6 +215,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	cout << "Max Len = " << max_len << endl;
 	cout << "Total Count = " << max_perm_count << endl;
+	cout << "Execute Time  = " << (end - start) << "s" << endl;
 
 	char new_value[DIGIT_COUNT + 1];
 	cin >> new_value;
