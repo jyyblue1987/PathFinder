@@ -23,6 +23,8 @@ using namespace std;
 
 #define MAX_PERM_COUNT		1000
 
+
+// ===== Input Data ================================================
 void generateInputValue(int **xx, int row_count, int column_count)
 {
 	srand(GetTickCount());
@@ -37,6 +39,26 @@ void generateInputValue(int **xx, int row_count, int column_count)
 	}
 }
 
+int* parseValue(char *val)
+{
+	if( val == NULL || strlen(val) < 1 )
+		return NULL;
+
+	int count = strlen(val);
+	int* x = (int *)calloc(count, sizeof(int));
+
+	int i = 0; 
+
+	for(i = 0; i < count; i++)
+		x[i] = val[i] - 48;
+
+	return x;
+}
+// ===== Input Data ================================================
+
+// ===== Main Engine ================================================
+
+// ===== Generate Possible Permutaion ================================================
 void generatePermList(int *perm_list, int level, int &count, int perm_len, int max_number)
 {
 	if( level == perm_len )
@@ -56,23 +78,9 @@ void generatePermList(int *perm_list, int level, int &count, int perm_len, int m
 		generatePermList(perm_list, level + 1, count, perm_len, max_number);
 	}
 }
+// ===== Generate Possible Permutaion ================================================
 
-int* parseValue(char *val)
-{
-	if( val == NULL || strlen(val) < 1 )
-		return NULL;
-
-	int count = strlen(val);
-	int* x = (int *)calloc(count, sizeof(int));
-
-	int i = 0; 
-
-	for(i = 0; i < count; i++)
-		x[i] = val[i] - 48;
-
-	return x;
-}
-
+// ===== Caculate Best Path(Permutation List, missing values) ================================================
 int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_missed, int digit_count, int max_row_count)
 {
 	int i = 0, j = 0, k = 0;
@@ -170,6 +178,7 @@ int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_m
 
 	return max_len;
 }
+// ===== Caculate Best Path(Permutation List, missing values) ================================================
 
 int _tmain(int argc, _TCHAR* argv[])
 {
