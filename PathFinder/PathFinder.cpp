@@ -73,7 +73,7 @@ int* parseValue(char *val)
 	return x;
 }
 
-int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_missed)
+int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_missed, int digit_count, int max_row_count)
 {
 	int i = 0, j = 0, k = 0;
 	int val = 0;
@@ -88,21 +88,21 @@ int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_m
 	
 	for(k = 0; k < p_count; k++)
 	{
-		pp = p + k * DIGIT_COUNT;		
+		pp = p + k * digit_count;		
 		missed_value = -1;
 
 		//if( pp[0] == 13 && pp[1] == 13 && pp[2] == 13 )
 		//	pp[0] = 13;
 		for(i = b - 1, j = 0; i >= t; i--, j++ )
 		{	
-			if( j % DIGIT_COUNT == 0 )
+			if( j % digit_count == 0 )
 				memset(hist, 0, 4 * sizeof(int));
 
-			val = x[i][pp[j % DIGIT_COUNT] - 1];
+			val = x[i][pp[j % digit_count] - 1];
 			hist[val]++;
 
 			// check missed value
-			if( j == DIGIT_COUNT - 1 )	// 3
+			if( j == digit_count - 1 )	// 3
 			{
 				if(hist[1] == 0 && hist[2] >= 1 && hist[3] >= 1 )
 					missed_value = 1;
@@ -114,7 +114,7 @@ int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_m
 				if( missed_value < 0 ) // Breakdown
 					break;		
 			}
-			else if( j < DIGIT_COUNT - 1 )
+			else if( j < digit_count - 1 )
 			{
 				
 			}
@@ -123,7 +123,7 @@ int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_m
 				if( hist[missed_value] > 0 ) // Breakdown														
 					break;
 
-				if( j % 3 == DIGIT_COUNT - 1 )
+				if( j % 3 == digit_count - 1 )
 				{
 					int breakdown_flag = 0;
 					for(int q = 1; q < 3; q++)
@@ -148,7 +148,7 @@ int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_m
 
 		if( len > max_len )
 		{
-			memset(max_perm_num_missed, 0, 2 * MAX_PERM_COUNT * sizeof(int));
+			memset(max_perm_num_missed, 0, 2 * max_row_count * sizeof(int));
 			max_perm_count = 0;
 
 			max_perm_num_missed[0] = k;
@@ -159,7 +159,7 @@ int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_m
 		}
 		else if( len >= max_len && len > 0 )
 		{
-			if( max_perm_count < MAX_PERM_COUNT )
+			if( max_perm_count < max_row_count )
 			{
 				max_perm_num_missed[max_perm_count * 2] = k;
 				max_perm_num_missed[max_perm_count * 2 + 1] = missed_value;
@@ -223,7 +223,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 	long int  start = GetTickCount();
 	int *max_perm_num_missed = (int *) calloc(MAX_PERM_COUNT * 2, sizeof(int));
-	int max_len = calcBestPath(xx, MAX_ROW_COUNT, 0, perm_list, PERM_TOTAL_COUNT, max_perm_num_missed);
+	int max_len = calcBestPath(xx, MAX_ROW_COUNT, 0, perm_list, PERM_TOTAL_COUNT, max_perm_num_missed, DIGIT_COUNT, MAX_PERM_COUNT);
 	long int  end = GetTickCount();
 
 	// display input values
@@ -259,7 +259,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		cout << ") height " << (max_len / DIGIT_COUNT);
 		int val = max_len % DIGIT_COUNT;
 		if( val > 0  )
-			cout << val << "/" << DIGIT_COUNT;
+			cout << " " << val << "/" << DIGIT_COUNT;
 		cout << " length " << max_len << " missing " << max_perm_num_missed[i * 2 + 1] << endl;		
 
 		max_perm_count++;
