@@ -9,9 +9,9 @@
 
 using namespace std;
 
-#define MAX_ROW_COUNT	102
+#define MAX_ROW_COUNT	12
 #define COLUMN_COUNT	16
-#define DIGIT_COUNT		3
+#define DIGIT_COUNT		6
 #define MAX_PERM_COUNT		1000
 
 void generateInputValue(int **xx, int row_count)
@@ -85,14 +85,14 @@ int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_m
 		//	pp[0] = 13;
 		for(i = b - 1, j = 0; i >= t; i--, j++ )
 		{	
-			if( j % 3 == 0 )
+			if( j % DIGIT_COUNT == 0 )
 				memset(hist, 0, 4 * sizeof(int));
 
-			val = x[i][pp[j % 3] - 1];
+			val = x[i][pp[j % DIGIT_COUNT] - 1];
 			hist[val]++;
 
 			// check missed value
-			if( j == 2 )	// 3
+			if( j == DIGIT_COUNT - 1 )	// 3
 			{
 				if(hist[1] == 0 && hist[2] >= 1 && hist[3] >= 1 )
 					missed_value = 1;
@@ -104,7 +104,7 @@ int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_m
 				if( missed_value < 0 ) // Breakdown
 					break;		
 			}
-			else if( j < 2 )
+			else if( j < DIGIT_COUNT - 1 )
 			{
 				
 			}
@@ -113,7 +113,7 @@ int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_m
 				if( hist[missed_value] > 0 ) // Breakdown														
 					break;
 
-				if( j % 3 == 2 )
+				if( j % 3 == DIGIT_COUNT - 1 )
 				{
 					int breakdown_flag = 0;
 					for(int q = 1; q < 3; q++)
@@ -224,7 +224,17 @@ int _tmain(int argc, _TCHAR* argv[])
 			break;
 
 		int *p = perm_list + p_num * DIGIT_COUNT;
-		cout << "(" << p[0] << "," << p[1] << "," << p[2] << ")" << "\t" << max_perm_num_missed[i * 2 + 1] << endl;		
+
+		cout << "(";
+		for(j = 0; j < DIGIT_COUNT; j++)
+		{
+			if( j > 0 )
+				cout << ",";		
+
+			cout << p[j];			
+		}
+		cout << ")" << "\t" << max_perm_num_missed[i * 2 + 1] << endl;		
+
 		max_perm_count++;
 	}
 
