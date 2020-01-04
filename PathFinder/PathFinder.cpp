@@ -9,11 +9,18 @@
 
 using namespace std;
 
-#define RANDOM_MODE	0
+#define RANDOM_MODE	1
 
+#if RANDOM_MODE
 #define MAX_ROW_COUNT	12
 #define COLUMN_COUNT	16
 #define DIGIT_COUNT		3
+#else
+#define MAX_ROW_COUNT	12
+#define COLUMN_COUNT	16
+#define DIGIT_COUNT		3
+#endif
+
 #define MAX_PERM_COUNT		1000
 
 void generateInputValue(int **xx, int row_count)
