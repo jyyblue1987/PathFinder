@@ -9,7 +9,7 @@
 
 using namespace std;
 
-#define MAX_ROW_COUNT	200
+#define MAX_ROW_COUNT	12
 #define COLUMN_COUNT	16
 #define DIGIT_COUNT		3
 #define MAX_PERM_COUNT		1000
@@ -184,7 +184,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	//	cout << endl;
 	//}
 
-	int row_count = 12;
 	char x[][COLUMN_COUNT + 1] = {
 		"1213232312321122",
 		"3232111213213121",
@@ -208,12 +207,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	//	xx[i] = parseValue(x[i]);
 	//}
 
-	generateInputValue(xx, row_count);
+	generateInputValue(xx, MAX_ROW_COUNT);
 
 	
 	unsigned long long  start = GetTickCount64();
 	int *max_perm_num_missed = (int *) calloc(MAX_PERM_COUNT * 2, sizeof(int));
-	int max_len = calcBestPath(xx, row_count, 0, perm_list, PERM_TOTAL_COUNT, max_perm_num_missed);
+	int max_len = calcBestPath(xx, MAX_ROW_COUNT, 0, perm_list, PERM_TOTAL_COUNT, max_perm_num_missed);
 	unsigned long long  end = GetTickCount64();
 
 	int max_perm_count = 0;
@@ -234,7 +233,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// output input values
 	cout << "Input Values: " << endl;
-	for(i = 0; i < row_count; i++)
+	for(i = 0; i < MAX_ROW_COUNT; i++)
 	{
 		for(j = 0; j < COLUMN_COUNT; j++)
 			cout << xx[i][j];
@@ -245,7 +244,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	cin >> new_value;
 
 	free(max_perm_num_missed);
-	for(i = 0; i < row_count; i++)
+	for(i = 0; i < MAX_ROW_COUNT; i++)
 		free(xx[i]);
 
 	free(perm_list);
