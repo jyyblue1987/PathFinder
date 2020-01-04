@@ -9,7 +9,7 @@
 
 using namespace std;
 
-#define MAX_ROW_COUNT	12
+#define MAX_ROW_COUNT	102
 #define COLUMN_COUNT	16
 #define DIGIT_COUNT		3
 #define MAX_PERM_COUNT		1000
@@ -210,10 +210,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	generateInputValue(xx, MAX_ROW_COUNT);
 
 	
-	unsigned long long  start = GetTickCount64();
+	long int  start = GetTickCount();
 	int *max_perm_num_missed = (int *) calloc(MAX_PERM_COUNT * 2, sizeof(int));
 	int max_len = calcBestPath(xx, MAX_ROW_COUNT, 0, perm_list, PERM_TOTAL_COUNT, max_perm_num_missed);
-	unsigned long long  end = GetTickCount64();
+	long int  end = GetTickCount();
 
 	int max_perm_count = 0;
 	for(i = 0; i < MAX_PERM_COUNT; i++)
@@ -227,7 +227,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		max_perm_count++;
 	}
 
-	cout << "Max Len = " << max_len << endl;
+	cout << "Max Len = " << max_len << endl;	
 	cout << "Total Count = " << max_perm_count << endl;
 	cout << "Execute Time  = " << (end - start) << "s" << endl;
 
