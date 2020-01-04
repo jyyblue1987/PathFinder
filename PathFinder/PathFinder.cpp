@@ -21,9 +21,13 @@ void generatePermList(int *perm_list, int level, int &count)
 
 	int i = 0;
 	for(i = 1; i <= COLUMN_COUNT; i++)
-	{		
-		generatePermList(perm_list, level + 1, count);
+	{
+		if( i > 1 )
+			memcpy(perm_list + DIGIT_COUNT * count,  perm_list + DIGIT_COUNT * (count - 1), sizeof(int) * level);
+
 		perm_list[DIGIT_COUNT * count + level] = i;
+		
+		generatePermList(perm_list, level + 1, count);
 	}
 }
 
@@ -50,9 +54,6 @@ int _tmain(int argc, _TCHAR* argv[])
 		cout << endl;
 	}
 	
-
-
-
 	free(perm_list);
 
 	return 0;
