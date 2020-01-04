@@ -14,6 +14,19 @@ using namespace std;
 #define DIGIT_COUNT		3
 #define MAX_PERM_COUNT		1000
 
+void generateInputValue(int **xx, int row_count)
+{
+	int i = 0;
+	for(i = 0; i < row_count; i++)
+	{
+		xx[i] = (int *)calloc(COLUMN_COUNT, sizeof(int));
+		for(int j = 0; j < COLUMN_COUNT; j++)
+		{
+			xx[i][j] = rand() % 3 + 1;
+		}
+	}
+}
+
 void generatePermList(int *perm_list, int level, int &count)
 {
 	if( level == DIGIT_COUNT )
@@ -190,10 +203,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	int *xx[MAX_ROW_COUNT];
 	memset(xx, 0, MAX_ROW_COUNT * sizeof(int*));
 
-	for(i = 0; i < row_count; i++)
-	{
-		xx[i] = parseValue(x[i]);
-	}
+	//for(i = 0; i < row_count; i++)
+	//{
+	//	xx[i] = parseValue(x[i]);
+	//}
+
+	generateInputValue(xx, row_count);
 
 	
 	unsigned long long  start = GetTickCount64();
@@ -216,6 +231,15 @@ int _tmain(int argc, _TCHAR* argv[])
 	cout << "Max Len = " << max_len << endl;
 	cout << "Total Count = " << max_perm_count << endl;
 	cout << "Execute Time  = " << (end - start) << "s" << endl;
+
+	// output input values
+	cout << "Input Values: " << endl;
+	for(i = 0; i < row_count; i++)
+	{
+		for(j = 0; j < COLUMN_COUNT; j++)
+			cout << xx[i][j];
+		cout << endl;
+	}
 
 	char new_value[DIGIT_COUNT + 1];
 	cin >> new_value;
