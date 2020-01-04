@@ -81,6 +81,24 @@ void generatePermList(int *perm_list, int level, int &count, int perm_len, int m
 // ===== Generate Possible Permutaion ================================================
 
 // ===== Caculate Best Path(Permutation List, missing values) ================================================
+// [Params]:
+//			x: 2-dimension array
+				//1213232312321122
+				//3232111213213121
+				//2111323231231213
+				//2323112323121213
+				//1213233321231231
+				//2111323132231222
+				//1123133212311123
+				//3233123132313211
+				//3112312312323121
+				//1232312312321113
+				//2132311232312123
+				//3121213232112312
+//			b: scan range (bottom) 
+//			t: scan range (top) 
+//			p: permutation list
+//			p_count: permutation count
 int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_missed, int digit_count, int max_row_count)
 {
 	int i = 0, j = 0, k = 0;
