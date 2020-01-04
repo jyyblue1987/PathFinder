@@ -25,6 +25,7 @@ using namespace std;
 
 void generateInputValue(int **xx, int row_count)
 {
+	srand(GetTickCount());
 	int i = 0;
 	for(i = 0; i < row_count; i++)
 	{
