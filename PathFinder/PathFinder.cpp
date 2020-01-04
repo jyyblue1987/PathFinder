@@ -216,6 +216,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	long int  end = GetTickCount();
 
 	int max_perm_count = 0;
+	cout << "Permutation" << "\t" << "Missing" << endl;	
 	for(i = 0; i < MAX_PERM_COUNT; i++)
 	{
 		int p_num = max_perm_num_missed[i * 2];
@@ -223,13 +224,15 @@ int _tmain(int argc, _TCHAR* argv[])
 			break;
 
 		int *p = perm_list + p_num * DIGIT_COUNT;
-		cout << "(" << p[0] << "," << p[1] << "," << p[2] << ") " << max_perm_num_missed[i * 2 + 1] << endl;		
+		cout << "(" << p[0] << "," << p[1] << "," << p[2] << ")" << "\t" << max_perm_num_missed[i * 2 + 1] << endl;		
 		max_perm_count++;
 	}
 
+	cout << endl;	
 	cout << "Max Len = " << max_len << endl;	
 	cout << "Total Count = " << max_perm_count << endl;
 	cout << "Execute Time  = " << (end - start) << "s" << endl;
+	cout << endl;	
 
 	// output input values
 	cout << "Input Values: " << endl;
