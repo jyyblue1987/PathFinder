@@ -93,7 +93,7 @@ int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_m
 
 		//if( pp[0] == 13 && pp[1] == 13 && pp[2] == 13 )
 		//	pp[0] = 13;
-		for(i = b - 1, j = 0; i >= t; i--, j++ )
+		for(i = b - 1, j = 0; i >= t - 1; i--, j++ )
 		{	
 			if( j % digit_count == 0 )
 				memset(hist, 0, 4 * sizeof(int));
@@ -223,7 +223,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 	long int  start = GetTickCount();
 	int *max_perm_num_missed = (int *) calloc(MAX_PERM_COUNT * 2, sizeof(int));
-	int max_len = calcBestPath(xx, MAX_ROW_COUNT, 0, perm_list, PERM_TOTAL_COUNT, max_perm_num_missed, DIGIT_COUNT, MAX_PERM_COUNT);
+	int max_len = calcBestPath(xx, MAX_ROW_COUNT, 1, perm_list, PERM_TOTAL_COUNT, max_perm_num_missed, DIGIT_COUNT, MAX_PERM_COUNT);
 	long int  end = GetTickCount();
 
 	// display input values
