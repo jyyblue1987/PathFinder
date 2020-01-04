@@ -23,37 +23,37 @@ using namespace std;
 
 #define MAX_PERM_COUNT		1000
 
-void generateInputValue(int **xx, int row_count)
+void generateInputValue(int **xx, int row_count, int column_count)
 {
 	srand(GetTickCount());
 	int i = 0;
 	for(i = 0; i < row_count; i++)
 	{
-		xx[i] = (int *)calloc(COLUMN_COUNT, sizeof(int));
-		for(int j = 0; j < COLUMN_COUNT; j++)
+		xx[i] = (int *)calloc(column_count, sizeof(int));
+		for(int j = 0; j < column_count; j++)
 		{
 			xx[i][j] = rand() % 3 + 1;
 		}
 	}
 }
 
-void generatePermList(int *perm_list, int level, int &count)
+void generatePermList(int *perm_list, int level, int &count, int perm_len, int max_number)
 {
-	if( level == DIGIT_COUNT )
+	if( level == perm_len )
 	{
 		count++;
 		return;
 	}
 
 	int i = 0;
-	for(i = 1; i <= COLUMN_COUNT; i++)
+	for(i = 1; i <= max_number; i++)
 	{
 		if( i > 1 )
-			memcpy(perm_list + DIGIT_COUNT * count,  perm_list + DIGIT_COUNT * (count - 1), sizeof(int) * level);
+			memcpy(perm_list + perm_len * count,  perm_list + perm_len * (count - 1), sizeof(int) * level);
 
-		perm_list[DIGIT_COUNT * count + level] = i;
+		perm_list[perm_len * count + level] = i;
 		
-		generatePermList(perm_list, level + 1, count);
+		generatePermList(perm_list, level + 1, count, perm_len, max_number);
 	}
 }
 
@@ -185,7 +185,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// generate perm list
 	int count = 0;
-	generatePermList(perm_list, 0, count);
+	generatePermList(perm_list, 0, count, DIGIT_COUNT, COLUMN_COUNT);
 
 	//for(i = 0; i < PERM_TOTAL_COUNT; i += DIGIT_COUNT )
 	//{
@@ -199,7 +199,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	
 #if RANDOM_MODE
-	generateInputValue(xx, MAX_ROW_COUNT);
+	generateInputValue(xx, MAX_ROW_COUNT, COLUMN_COUNT);
 #else
 	char x[][COLUMN_COUNT + 1] = {
 		"1213232312321122",
