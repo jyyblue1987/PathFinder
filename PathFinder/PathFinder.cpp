@@ -9,9 +9,11 @@
 
 using namespace std;
 
+#define RANDOM_MODE	0
+
 #define MAX_ROW_COUNT	12
 #define COLUMN_COUNT	16
-#define DIGIT_COUNT		6
+#define DIGIT_COUNT		3
 #define MAX_PERM_COUNT		1000
 
 void generateInputValue(int **xx, int row_count)
@@ -184,6 +186,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	//	cout << endl;
 	//}
 
+	int *xx[MAX_ROW_COUNT];
+	memset(xx, 0, MAX_ROW_COUNT * sizeof(int*));
+
+	
+#if RANDOM_MODE
+	generateInputValue(xx, MAX_ROW_COUNT);
+#else
 	char x[][COLUMN_COUNT + 1] = {
 		"1213232312321122",
 		"3232111213213121",
@@ -198,16 +207,10 @@ int _tmain(int argc, _TCHAR* argv[])
 		"2132311232312123",
 		"3121213232112312"
 	}; 
-	 
-	int *xx[MAX_ROW_COUNT];
-	memset(xx, 0, MAX_ROW_COUNT * sizeof(int*));
 
-	//for(i = 0; i < row_count; i++)
-	//{
-	//	xx[i] = parseValue(x[i]);
-	//}
-
-	generateInputValue(xx, MAX_ROW_COUNT);
+	for(i = 0; i < MAX_ROW_COUNT; i++)
+		xx[i] = parseValue(x[i]);	
+#endif
 
 	
 	long int  start = GetTickCount();
