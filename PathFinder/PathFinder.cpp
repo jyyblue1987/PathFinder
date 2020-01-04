@@ -66,8 +66,11 @@ int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_m
 	{
 		pp = p + k * DIGIT_COUNT;		
 		missed_value = -1;
+
+		//if( pp[0] == 13 && pp[1] == 13 && pp[2] == 13 )
+		//	pp[0] = 13;
 		for(i = b - 1, j = 0; i >= t; i--, j++ )
-		{				
+		{	
 			if( j % 3 == 0 )
 				memset(hist, 0, 4 * sizeof(int));
 
@@ -82,7 +85,7 @@ int calcBestPath(int **x, int b, int t, int *p, int p_count, int *max_perm_num_m
 				else if(hist[1] >= 1 && hist[2] == 0 && hist[3] >= 1 )
 					missed_value = 2;
 				else if(hist[1] >= 1 && hist[2] >= 1 && hist[3] == 0 )
-					missed_value = 2;	 
+					missed_value = 3;	 
 
 				if( missed_value < 0 ) // Breakdown
 					break;		
@@ -192,8 +195,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 	int *max_perm_num_missed = (int *) calloc(MAX_PERM_COUNT * 2, sizeof(int));
-	calcBestPath(xx, row_count, 0, perm_list, PERM_TOTAL_COUNT, max_perm_num_missed);
+	int max_len = calcBestPath(xx, row_count, 0, perm_list, PERM_TOTAL_COUNT, max_perm_num_missed);
 
+	int max_perm_count = 0;
 	for(i = 0; i < MAX_PERM_COUNT; i++)
 	{
 		int p_num = max_perm_num_missed[i * 2];
@@ -202,7 +206,14 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		int *p = perm_list + p_num * DIGIT_COUNT;
 		cout << "(" << p[0] << "," << p[1] << "," << p[2] << ") " << max_perm_num_missed[i * 2 + 1] << endl;		
+		max_perm_count++;
 	}
+
+	cout << "Max Len = " << max_len << endl;
+	cout << "Total Count = " << max_perm_count << endl;
+
+	char new_value[DIGIT_COUNT + 1];
+	cin >> new_value;
 
 	free(max_perm_num_missed);
 	for(i = 0; i < row_count; i++)
