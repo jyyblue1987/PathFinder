@@ -215,6 +215,18 @@ int _tmain(int argc, _TCHAR* argv[])
 	int max_len = calcBestPath(xx, MAX_ROW_COUNT, 0, perm_list, PERM_TOTAL_COUNT, max_perm_num_missed);
 	long int  end = GetTickCount();
 
+	// display input values
+	cout << "Input Values: " << endl;
+	for(i = 0; i < MAX_ROW_COUNT; i++)
+	{
+		for(j = 0; j < COLUMN_COUNT; j++)
+			cout << xx[i][j];
+		cout << endl;
+	}
+	cout << endl;
+
+	// display permutation - missed value
+
 	int max_perm_count = 0;
 	cout << "Permutation" << "\t" << "Missing" << endl;	
 	for(i = 0; i < MAX_PERM_COUNT; i++)
@@ -238,20 +250,13 @@ int _tmain(int argc, _TCHAR* argv[])
 		max_perm_count++;
 	}
 
+	// display solution.
 	cout << endl;	
 	cout << "Max Len = " << max_len << endl;	
 	cout << "Total Count = " << max_perm_count << endl;
-	cout << "Execute Time  = " << (end - start) << "s" << endl;
+	cout << "Execute Time  = " << (end - start) << "ms" << endl;
 	cout << endl;	
 
-	// output input values
-	cout << "Input Values: " << endl;
-	for(i = 0; i < MAX_ROW_COUNT; i++)
-	{
-		for(j = 0; j < COLUMN_COUNT; j++)
-			cout << xx[i][j];
-		cout << endl;
-	}
 
 	char new_value[DIGIT_COUNT + 1];
 	cin >> new_value;
